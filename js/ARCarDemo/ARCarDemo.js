@@ -32,6 +32,7 @@ var ARCarDemo = createReactClass({
       tapGrey: false,
       tapRed: false,
       tapYellow: false,
+      currentObject: 'coyote'
     }
   },
 
@@ -43,40 +44,26 @@ var ARCarDemo = createReactClass({
 
         <ViroARImageMarker target={"logo"} onAnchorFound={this._onAnchorFound} pauseUpdates={this.state.pauseUpdates}>
           <ViroNode scale={[0, 0, 0]} transformBehaviors={["billboardY"]} animation={{name:this.state.animName, run:this.state.playAnim,}}>
-            <ViroSphere materials={["white_sphere"]}
-              heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-              position={[-.2, .25, 0]}
-              onClick={this._selectWhite}
-              animation={{name:"tapAnimation", run:this.state.tapWhite, onFinish:this._animateFinished}}
-              shadowCastingBitMask={0} />
-
             <ViroSphere materials={["blue_sphere"]}
               heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-              position={[-.1, .25, 0]}
+              position={[-.1, .35, 0]}
               onClick={this._selectBlue}
               animation={{name:"tapAnimation", run:this.state.tapBlue, onFinish:this._animateFinished}}
               shadowCastingBitMask={0} />
 
             <ViroSphere materials={["grey_sphere"]}
               heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-              position={[0, .25, 0]}
+              position={[0, .35, 0]}
               onClick={this._selectGrey}
               animation={{name:"tapAnimation", run:this.state.tapGrey, onFinish:this._animateFinished}}
               shadowCastingBitMask={0} />
 
             <ViroSphere materials={["red_sphere"]}
               heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-              position={[.1, .25, 0]}
+              position={[.1, .35, 0]}
               onClick={this._selectRed}
               animation={{name:"tapAnimation", run:this.state.tapRed, onFinish:this._animateFinished}}
               shadowCastingBitMask={0} />
-
-            <ViroSphere materials={["yellow_sphere"]}
-              heightSegmentCount={20} widthSegmentCount={20} radius={.03}
-              position={[.2, .25, 0]}
-              onClick={this._selectYellow}
-              animation={{name:"tapAnimation", run:this.state.tapYellow, onFinish:this._animateFinished}}
-              shadowCastingBitMask={0}/>
           </ViroNode>
 
           {/* <Viro3DObject
@@ -96,12 +83,12 @@ var ARCarDemo = createReactClass({
                         ]}
             type="OBJ"
             materials={["coyote"]}
-            // onClick={this._toggleButtons}
+            onClick={this._toggleButtons}
             animation={{name:"scaleCoyote", run:this.state.animateCar,}} 
-            dragType="FixedToWorld" onDrag={()=>{}}
+            visible={this.state.currentObject === 'coyote'}
           />
 
-          {/* <Viro3DObject
+          <Viro3DObject
             scale={[0, 0, 0]}
             source={require('./res/Pallet/model.obj')}
             resources={[require('./res/Pallet/materials.mtl'),
@@ -109,7 +96,9 @@ var ARCarDemo = createReactClass({
             type="OBJ"
             // materials={["coyote"]}
             onClick={this._toggleButtons}
-            animation={{name:"scalePallet", run:this.state.animateCar,}} /> */}
+            animation={{name:"scalePallet", run:this.state.animateCar,}}
+            dragType="FixedToWorld" onDrag={()=>{}}
+            visible={this.state.currentObject === 'pallet'} />
 
           <ViroSpotLight
             innerAngle={5}
@@ -152,13 +141,15 @@ var ARCarDemo = createReactClass({
   },
   _selectBlue(){
     this.setState({
-      texture : "blue",
+      texture: 'blue',
+      currentObject: 'coyote',
       tapBlue: true
     })
   },
   _selectGrey(){
     this.setState({
-      texture : "grey",
+      texture: 'grey',
+      currentObject: 'pallet',
       tapGrey: true
     })
   },
@@ -252,7 +243,7 @@ ViroAnimations.registerAnimations({
                   duration: 200,},
     scaleCoyote:{properties:{scaleX:.05, scaleY:.05, scaleZ:.05,},
                   duration: 500, easing: "bounce"},
-    scalePallet:{properties:{scaleX:.1, scaleY:.1, scaleZ:.1,},
+    scalePallet:{properties:{scaleX:.12, scaleY:.12, scaleZ:.1,},
                   duration: 500, easing: "bounce"},
     scaleSphereUp:{properties:{scaleX:.8, scaleY:.8, scaleZ:.8,},
                   duration: 50, easing: "easeineaseout"},
